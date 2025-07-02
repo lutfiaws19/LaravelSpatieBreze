@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Antrian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // Tambahkan ini untuk Auth
 
 class PelangganController extends Controller
 {
@@ -19,26 +20,29 @@ class PelangganController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'nama_pemilik' => 'required',
-            'nomor_motor' => 'required',
-            'type_motor' => 'required',
-            'status' => 'in:draft,dalam_antrian', // Pastikan status ini ada di database
-        ]);
+{
+    // Validasi field lain (nama_pemilik, dsb)
+    $request->validate([
+        'nama_pemilik' => 'required|string|max:255',
+        'nomor_motor' => 'required|string|max:100',
+        'type_motor' => 'required|string|max:100',
+        'nomor_antrian' => 'required|string|max:100',
+        'tanggal_masuk' => 'required|date',
+        'status' => 'required|string',
+        // tidak perlu validasi nama_kerusakan jika tidak wajib
+    ]);
 
-        $lastAntrian = Antrian::orderBy('nomor_antrian', 'desc')->first();
-        $nomorAntrian = $lastAntrian ? $lastAntrian->nomor_antrian + 1 : 1;
+    Antrian::create([
+        'nama_pemilik' => $request->nama_pemilik,
+        'nomor_motor' => $request->nomor_motor,
+        'type_motor' => $request->type_motor,
+        'nomor_antrian' => $request->nomor_antrian,
+        'tanggal_masuk' => $request->tanggal_masuk,
+        'status' => $request->status,
+        'nama_kerusakan' => $request->input('nama_kerusakan', ''), // <- baris penting
+    ]);
 
-        Antrian::create([
-            'nama_pemilik' => $request->nama_pemilik,
-            'nomor_motor' => $request->nomor_motor,
-            'type_motor' => $request->type_motor,
-            'nomor_antrian' => $nomorAntrian,
-            'tanggal_masuk' => now(), // Menggunakan waktu saat ini
-            'status' => $request->status, // Tambahkan status jika diperlukan
-        ]);
+    return redirect()->route('pelanggan.index')->with('success', 'Data berhasil disimpan');
+}
 
-        return redirect()->route('pelanggan.index')->with('success', 'Antrian berhasil ditambahkan!');
-    }
 }

@@ -25,7 +25,7 @@ class KerusakanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kerusakan' => 'required|string|max:255',
+            'nama_kerusakan' => 'string|max:255',
             'estimasi_waktu' => 'integer',
         ]);
 
@@ -51,7 +51,7 @@ class KerusakanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_kerusakan' => 'sometimes|required|string|max:255',
+            'nama_kerusakan' => 'sometimes|string|max:255',
             'estimasi_waktu' => 'sometimes|integer',
         ]);
 
