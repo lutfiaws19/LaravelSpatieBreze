@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    Route::post('/antrian/{id}/pindah-ke-history', [AntrianController::class, 'pindahkanKeHistory'])->name('antrian.toHistory');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -49,9 +49,9 @@ Route::middleware('auth')->group(function () {
    
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
     Route::delete('/history/{id}', [HistoryController::class, 'destroy'])->name('history.destroy');
-
+    
 });
- Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
-    Route::delete('/history/{id}', [HistoryController::class, 'destroy'])->name('history.destroy');
+
+
 // Rute untuk halaman antrian (jika ingin terpisah)
 Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian.index')->middleware('auth');

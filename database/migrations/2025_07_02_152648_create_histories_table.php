@@ -16,7 +16,7 @@ return new class extends Migration
         $table->string('nama_pemilik');
         $table->string('nomor_motor');
         $table->string('type_motor');
-        $table->string('status');
+        $table->enum('status', ['draft', 'dalam_antrian', 'selesai'])->default('draft');
         $table->timestamps();
         });
     }

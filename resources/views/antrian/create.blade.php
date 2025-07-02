@@ -44,7 +44,7 @@
             <div class="form-group">
                 <label for="nama_kerusakan">Kerusakan</label>
                 <select class="form-control" name="nama_kerusakan" id="nama_kerusakan" required>
-                    <option disabled value>Pilih Kerusakan</option>
+                    <option value="" disabled selected>----</option>
                     @foreach ($ker as $kerusakan)
                         <option value="{{ $kerusakan->id }}" data-estimasi="{{ $kerusakan->estimasi_waktu }}">{{ $kerusakan->nama_kerusakan }}</option>
                     @endforeach

@@ -90,6 +90,10 @@
                                     <i class="fas fa-trash"></i> Hapus
                                 </button>
                             </form>
+                            <form action="{{ route('antrian.toHistory', $antrian->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Pindahkan antrian ini ke riwayat?')">Selesaikan</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

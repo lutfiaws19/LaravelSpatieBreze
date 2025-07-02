@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Antrian;
+use App\Models\History;
 use App\Models\Kerusakan;
 use Illuminate\Http\Request;
 
@@ -118,4 +119,23 @@ class AntrianController extends Controller
         // Redirect ke halaman daftar antrian dengan pesan sukses
         return redirect()->route('antrian.index')->with('success', 'Antrian berhasil diperbarui!');
     }
+    // Memindahkan data dari antrian ke history
+public function pindahkanKeHistory($id)
+{
+    $antrian = Antrian::findOrFail($id);
+
+    // Simpan data ke tabel histories
+    History::create([
+        'nama_pemilik' => $antrian->nama_pemilik,
+        'nomor_motor' => $antrian->nomor_motor,
+        'type_motor' => $antrian->type_motor,
+        'status' => 'selesai', // atau $antrian->status jika kamu mau simpan status saat itu
+    ]);
+
+    // Hapus data antrian
+    $antrian->delete();
+
+    return redirect()->route('antrian.index')->with('success', 'Antrian berhasil dipindahkan ke history!');
+}
+
 }
