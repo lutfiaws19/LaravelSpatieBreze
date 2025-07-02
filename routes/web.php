@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/antrian/{id}/pindah-ke-history', [AntrianController::class, 'pindahkanKeHistory'])->name('antrian.toHistory');
+    
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
