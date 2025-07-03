@@ -25,21 +25,27 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>No</th>
                     <th>Nama Pemilik</th>
                     <th>Nomor Motor</th>
                     <th>status</th>
                     <th>Tanggal Dibuat</th>
+                    <th>Nomor Antrian</th>
                 </tr>
             </thead>
             <tbody>
+               @php 
+                    $no = 1; 
+                    $totalEstimasi = 0; // Inisialisasi total estimasi waktu
+                @endphp <!-- Inisialisasi variabel nomor -->
                 @foreach ($antrians as $antrian)
                     <tr>
-                        <td>{{ $antrian->id }}</td>
+                        <td>{{ $no++ }}</td>
                         <td>{{ $antrian->nama_pemilik }}</td>
                         <td>{{ $antrian->nomor_motor }}</td>
                         <td>{{ $antrian->status }}</td>
                         <td>{{ $antrian->created_at }}</td>
+                        <td>{{ $antrian->nomor_antrian }}</td>
                         
                     </tr>
                 @endforeach

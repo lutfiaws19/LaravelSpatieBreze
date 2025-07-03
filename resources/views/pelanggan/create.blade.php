@@ -24,11 +24,9 @@
         <form action="{{ route('pelanggan.store') }}" method="POST">
             @csrf
 
-            {{-- Nama Pemilik (Otomatis dari User Login) --}}
             <div class="form-group">
                 <label for="nama_pemilik">Nama Pemilik</label>
-                <input type="text" class="form-control" id="nama_pemilik" name="nama_pemilik"
-                       value="{{ $user->name }}" readonly>
+                <input type="text" class="form-control" id="nama_pemilik" name="nama_pemilik" value="{{ $user->name }}" readonly>
             </div>
 
             <div class="form-group">
@@ -41,8 +39,21 @@
                 <input type="text" class="form-control" id="type_motor" name="type_motor" required>
             </div>
 
+            <!-- Sembunyikan field kerusakan -->
+            <input type="hidden" name="nama_kerusakan" value="3"> <!-- ID kerusakan otomatis -->
+            <input type="hidden" id="estimasi_waktu" name="estimasi_waktu" value="0"> <!-- Estimasi waktu otomatis -->
+
+            <!-- Sembunyikan field status -->
+            <input type="hidden" name="status" value="draft"> <!-- Status otomatis -->
+
+            <div class="form-group">
+                <label for="tanggal_masuk">Tanggal Masuk</label>
+                <input type="datetime-local" class="form-control" id="tanggal_masuk" name="tanggal_masuk" value="{{ old('tanggal_masuk', now()->format('Y-m-d\TH:i')) }}" required>
+                <small class="form-text text-muted">Format: YYYY-MM-DD HH:MM (akan diisi otomatis jika tidak diubah).</small>
+            </div>
+
             <button type="submit" class="btn btn-success">Simpan Antrian</button>
-            <a href="{{ route('antrian.index') }}" class="btn btn-secondary">Kembali</a>
+            <a href="{{ route('pelanggan.index') }}" class="btn btn-secondary">Kembali</a>
         </form>
     </div>
 
