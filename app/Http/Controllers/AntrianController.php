@@ -11,29 +11,31 @@ class AntrianController extends Controller
 {
     // Menampilkan daftar antrian
     public function index(Request $request)
-{
-    $query = Antrian::query();
+    {
+        $query = Antrian::query();
 
-    // Filter berdasarkan nama pemilik
-    if ($request->filled('nama_pemilik')) {
-        $query->where('nama_pemilik', 'like', '%' . $request->nama_pemilik . '%');
+        // Filter berdasarkan nama pemilik
+        if ($request->filled('nama_pemilik')) {
+            $query->where('nama_pemilik', 'like', '%' . $request->nama_pemilik . '%');
+        }
+
+        // Filter berdasarkan tanggal masuk
+        if ($request->filled('tanggal_masuk')) {
+            $query->whereDate('tanggal_masuk', $request->tanggal_masuk);
+        }
+
+        $antrians = $query->get(); // Ambil data antrian yang sudah difilter
+        $totalAntrian = Antrian::count();
+        $prosesAntrian = Antrian::where('status', 'dalam_antrian')->count();
+        $selesaiAntrian = Antrian::where('status', 'selesai')->count();
+
+        return view('antrian.index', compact('antrians', 'totalAntrian', 'prosesAntrian', 'selesaiAntrian')); // Mengirim semua variabel yang diperlukan
     }
-
-    // Filter berdasarkan tanggal masuk
-    if ($request->filled('tanggal_masuk')) {
-        $query->whereDate('tanggal_masuk', $request->tanggal_masuk);
-    }
-
-    $antrians = $query->get(); // Ambil data antrian yang sudah difilter
-
-    return view('antrian.index', compact('antrians')); // Ganti 'antrian.index' dengan nama view Anda
-}
-
 
     // Menampilkan form untuk menambah antrian
     public function create()
     {
-        $ker = kerusakan::all();
+        $ker = Kerusakan::all(); // Pastikan menggunakan huruf kapital
         return view('antrian.create', compact('ker'));
     }
 
@@ -42,19 +44,18 @@ class AntrianController extends Controller
     {
         // Validasi input
         $request->validate([
-        'nama_pemilik' => 'required|string|max:255',
-        'nomor_motor' => 'required|string|max:255|unique:antrians',
-        'type_motor' => 'required|string|max:255',
-        'nama_kerusakan' => 'required|exists:kerusakans,id',
-        'estimasi_waktu' => 'required|string',
-        'status' => 'required|in:draft,dalam_antrian,selesai',
+            'nama_pemilik' => 'required|string|max:255',
+            'nomor_motor' => 'required|string|max:255|unique:antrians',
+            'type_motor' => 'required|string|max:255',
+            'nama_kerusakan' => 'required|exists:kerusakans,id', // Pastikan ini merujuk ke kolom yang benar
+            'estimasi_waktu' => 'required|string|max:255',
+            'status' => 'required|in:draft,dalam_antrian,selesai',
         ]);
 
         $lastAntrian = Antrian::orderBy('nomor_antrian', 'desc')->first();
         $nomorAntrian = $lastAntrian ? $lastAntrian->nomor_antrian + 1 : 1; // Jika tidak ada antrian, mulai dari 1
         
         $currentDateTime = now();
- 
 
         Antrian::create([
             'nama_pemilik' => $request->nama_pemilik,
@@ -63,10 +64,9 @@ class AntrianController extends Controller
             'nama_kerusakan' => $request->nama_kerusakan,
             'estimasi_waktu' => $request->estimasi_waktu,
             'status' => $request->status,
-            'nomor_antrian' =>$nomorAntrian,
+            'nomor_antrian' => $nomorAntrian,
             'tanggal_masuk' => $currentDateTime, // Menggunakan waktu saat ini
         ]);
-    
 
         // Redirect ke halaman daftar antrian dengan pesan sukses
         return redirect()->route('antrian.index')->with('success', 'Antrian berhasil ditambahkan!');
@@ -103,14 +103,12 @@ class AntrianController extends Controller
         // Validasi input
         $request->validate([
             'nama_pemilik' => 'required|string|max:255',
-            'nomor_motor' => 'required|string|max:255|unique:antrians,type_motor,' . $id,
+            'nomor_motor' => 'required|string|max:255|unique:antrians,nomor_motor,' . $id,
             'type_motor' => 'required|string|max:255',
             'nama_kerusakan' => 'required|exists:kerusakans,id',
             'estimasi_waktu' => 'required|string|max:255',    
             'status' => 'required|in:draft,dalam_antrian,selesai',
         ]);
-
-        
 
         // Mencari antrian berdasarkan ID dan memperbarui datanya
         $antrian = Antrian::findOrFail($id);
@@ -119,23 +117,23 @@ class AntrianController extends Controller
         // Redirect ke halaman daftar antrian dengan pesan sukses
         return redirect()->route('antrian.index')->with('success', 'Antrian berhasil diperbarui!');
     }
+
     // Memindahkan data dari antrian ke history
-public function pindahkanKeHistory($id)
-{
-    $antrian = Antrian::findOrFail($id);
+    public function pindahkanKeHistory($id)
+    {
+        $antrian = Antrian::findOrFail($id);
 
-    // Simpan data ke tabel histories
-    History::create([
-        'nama_pemilik' => $antrian->nama_pemilik,
-        'nomor_motor' => $antrian->nomor_motor,
-        'type_motor' => $antrian->type_motor,
-        'status' => 'selesai', // atau $antrian->status jika kamu mau simpan status saat itu
-    ]);
+        // Simpan data ke tabel histories
+        History::create([
+            'nama_pemilik' => $antrian->nama_pemilik,
+            'nomor_motor' => $antrian->nomor_motor,
+            'type_motor' => $antrian->type_motor,
+            'status' => 'selesai', // atau $antrian->status jika kamu mau simpan status saat itu
+        ]);
 
-    // Hapus data antrian
-    $antrian->delete();
+        // Hapus data antrian
+        $antrian->delete();
 
-    return redirect()->route('antrian.index')->with('success', 'Antrian berhasil dipindahkan ke history!');
-}
-
+        return redirect()->route('antrian.index')->with('success', 'Antrian berhasil dipindahkan ke history!');
+    }
 }

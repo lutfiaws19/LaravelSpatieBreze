@@ -10,13 +10,16 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 2rem 0;
         }
-        .table th, .table td {
-            vertical-align: middle;
-        }
-        .badge {
-            font-size: 0.9rem;
-        }
+        .card-title { font-size: 1rem; font-weight: 500; }
+        .card-text { font-size: 1.75rem; font-weight: 700; }
+        .bg-primary { background: linear-gradient(45deg, #3a7bd5, #00d2ff) !important; }
+        .bg-warning { background: linear-gradient(45deg, #f46b45, #eea849) !important; }
+        .bg-success { background: linear-gradient(45deg, #11998e, #38ef7d) !important; }
+        .card { border-radius: 0.5rem; overflow: hidden; }
+        .table th, .table td { vertical-align: middle; }
+        .badge { font-size: 0.9rem; }
         .btn-primary {
             background: linear-gradient(to right, #4f46e5, #7c3aed);
             color: white;
@@ -31,15 +34,39 @@
     </style>
 </head>
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daftar Antrian Bengkel Motor') }}
-        </h2>
-    </x-slot>
 <body>
     <div class="container mt-5">
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Antrian</h5>
+                        <h3 class="card-text">{{ $totalAntrian }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">Dalam Proses</h5>
+                        <h3 class="card-text">{{ $prosesAntrian }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Selesai</h5>
+                        <h3 class="card-text">{{ $selesaiAntrian }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         @if(Auth::user()->hasRole('Admin'))
-            <a href="{{ route('antrian.create') }}" class="btn btn-primary mb-3">Tambah Antrian</a>
+            <a href="{{ route('antrian.create') }}" class="btn btn-primary mb-4">
+                <i class="fas fa-plus mr-2"></i> Tambah Antrian
+            </a>
         @endif
 
         <!-- Form Pencarian -->
@@ -169,6 +196,4 @@
     </script>
 </body>
 </html>
-
 </x-app-layout>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

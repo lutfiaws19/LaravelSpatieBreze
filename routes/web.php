@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\PenagihanController;
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,3 +63,5 @@ Route::post('penagihan/{antrian}', [PenagihanController::class, 'store'])->name(
 Route::get('penagihan/{antrian}/show', [PenagihanController::class, 'show'])->name('penagihan.show');
 Route::get('penagihan/{penagihan}/edit', [PenagihanController::class, 'edit'])->name('penagihan.edit');
 Route::put('penagihan/{penagihan}', [PenagihanController::class, 'update'])->name('penagihan.update');
+
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
