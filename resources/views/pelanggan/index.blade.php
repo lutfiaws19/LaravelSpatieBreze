@@ -31,6 +31,7 @@
                     <th>status</th>
                     <th>Tanggal Dibuat</th>
                     <th>Nomor Antrian</th>
+                    <th>aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +47,7 @@
                         <td>{{ $antrian->status }}</td>
                         <td>{{ $antrian->created_at }}</td>
                         <td>{{ $antrian->nomor_antrian }}</td>
+                        <td><a href="{{ route('penagihan.show', $antrian->id) }}" class="btn btn-success btn-sm">Lihat Pesan Penagihan</a></td>
                         
                     </tr>
                 @endforeach

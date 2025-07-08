@@ -6,6 +6,29 @@
     <title>Daftar Antrian Bengkel Motor</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Tambahkan Font Awesome -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .badge {
+            font-size: 0.9rem;
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #7c3aed, #4f46e5);
+        }
+        .alert-info {
+            background-color: #e0f7fa;
+            color: #00796b;
+        }
+    </style>
 </head>
 <x-app-layout>
     <x-slot name="header">
@@ -15,29 +38,29 @@
     </x-slot>
 <body>
     <div class="container mt-5">
-         @if(Auth::user()->hasRole('Admin'))
-        <a href="{{ route('antrian.create') }}" class="btn btn-primary mb-3">Tambah Antrian</a>
-         @endif
+        @if(Auth::user()->hasRole('Admin'))
+            <a href="{{ route('antrian.create') }}" class="btn btn-primary mb-3">Tambah Antrian</a>
+        @endif
 
-          <!-- Form Pencarian -->
-    <form method="GET" action="{{ route('antrian.index') }}" class="mb-3">
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" name="nama_pemilik" class="form-control" placeholder="Cari Nama Pemilik" value="{{ request('nama_pemilik') }}">
+        <!-- Form Pencarian -->
+        <form method="GET" action="{{ route('antrian.index') }}" class="mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" name="nama_pemilik" class="form-control" placeholder="Cari Nama Pemilik" value="{{ request('nama_pemilik') }}">
+                </div>
+                <div class="col-md-4">
+                    <input type="date" name="tanggal_masuk" class="form-control" placeholder="Filter Tanggal Masuk" value="{{ request('tanggal_masuk') }}">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">Cari</button>
+                </div>
             </div>
-            <div class="col-md-4">
-                <input type="date" name="tanggal_masuk" class="form-control" placeholder="Filter Tanggal Masuk" value="{{ request('tanggal_masuk') }}">
-            </div>
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-primary">Cari</button>
-            </div>
-        </div>
-    </form>
+        </form>
 
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>No</th> <!-- Kolom untuk nomor antrian -->
+                    <th>No</th>
                     <th>Nama Pemilik</th>
                     <th>Nomor Motor</th>
                     <th>Type Motor</th>
@@ -53,10 +76,10 @@
                 @php 
                     $no = 1; 
                     $totalEstimasi = 0; // Inisialisasi total estimasi waktu
-                @endphp <!-- Inisialisasi variabel nomor -->
+                @endphp
                 @foreach ($antrians as $antrian)
                     <tr>
-                        <td>{{ $no++ }}</td> <!-- Tampilkan nomor antrian dan increment -->
+                        <td>{{ $no++ }}</td>
                         <td>{{ $antrian->nama_pemilik }}</td>
                         <td>{{ $antrian->nomor_motor }}</td>
                         <td>{{ $antrian->type_motor }}</td>
@@ -80,20 +103,34 @@
                         <td>{{ $antrian->tanggal_masuk }}</td>
                         <td>{{ $antrian->nomor_antrian }}</td>
                         <td>
-                            <a href="{{ route('antrian.edit', $antrian->id) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <form action="{{ route('antrian.destroy', $antrian->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus antrian ini?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </button>
-                            </form>
-                            <form action="{{ route('antrian.toHistory', $antrian->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Pindahkan antrian ini ke riwayat?')">Selesaikan</button>
-                            </form>
+                            <div class="d-flex flex-wrap align-items-center gap-1">
+                                <a href="{{ route('antrian.edit', $antrian->id) }}" class="btn btn-warning btn-sm mb-1">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('antrian.destroy', $antrian->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus antrian ini?');" class="mb-1 ml-1">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                                <form action="{{ route('antrian.toHistory', $antrian->id) }}" method="POST" style="display:inline;" class="mb-1 ml-1">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Pindahkan antrian ini ke riwayat?')">
+                                        <i class="fas fa-check"></i> Selesaikan
+                                    </button>
+                                </form>
+                                @if(Auth::user()->hasRole('Admin'))
+                                    <a href="{{ route('penagihan.create', $antrian->id) }}" class="btn btn-info btn-sm mb-1 ml-1">
+                                        <i class="fas fa-envelope"></i> Tagih
+                                    </a>
+                                    @if($antrian->penagihan)
+                                        <a href="{{ route('penagihan.edit', $antrian->penagihan->id) }}" class="btn btn-secondary btn-sm mb-1 ml-1">
+                                            <i class="fas fa-edit"></i> Edit Tagihan
+                                        </a>
+                                    @endif
+                                @endif
+                            </div>
                         </td>
                     </tr>
                 @endforeach
@@ -106,48 +143,32 @@
             <strong>Countdown:</strong> <span id="countdown_timer"></span>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
-<script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const estimasiWaktuInput = document.getElementById('estimasi_waktu');
-
-
-            // Set estimasi waktu berdasarkan kerusakan yang sudah dipilih saat load
-            const selectedOption = kerusakanSelect.options[kerusakanSelect.selectedIndex];
-            estimasiWaktuInput.value = selectedOption.getAttribute('data-estimasi');
-
-
-
-            kerusakanSelect.addEventListener('change', function() {
-                const selectedOption = kerusakanSelect.options[kerusakanSelect.selectedIndex];
-                const estimasiWaktu = selectedOption.getAttribute('data-estimasi');
-                estimasiWaktuInput.value = estimasiWaktu;
-            });
-
             let totalEstimasi = {{ $totalEstimasi }} * 60; // konversi menit ke detik
             const countdownElement = document.getElementById('countdown_timer');
 
-        function countdown() {
-            if (totalEstimasi > 0) {
-                const menit = Math.floor(totalEstimasi / 60);
-                const detik = totalEstimasi % 60;
-                countdownElement.textContent = `${menit} menit ${detik} detik`;
-                totalEstimasi--;
-                setTimeout(countdown, 1000);
-            } else {
-                countdownElement.textContent = 'Selesai!';
-                
+            function countdown() {
+                if (totalEstimasi > 0) {
+                    const menit = Math.floor(totalEstimasi / 60);
+                    const detik = totalEstimasi % 60;
+                    countdownElement.textContent = `${menit} menit ${detik} detik`;
+                    totalEstimasi--;
+                    setTimeout(countdown, 1000);
+                } else {
+                    countdownElement.textContent = 'Selesai!';
+                }
             }
-        }
 
-        countdown();
+            countdown();
         });
     </script>
 </body>
 </html>
+
 </x-app-layout>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
