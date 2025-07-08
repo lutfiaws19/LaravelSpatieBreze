@@ -7,11 +7,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Tambahkan Font Awesome -->
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 2rem 0;
-        }
         .card-title { font-size: 1rem; font-weight: 500; }
         .card-text { font-size: 1.75rem; font-weight: 700; }
         .bg-primary { background: linear-gradient(45deg, #3a7bd5, #00d2ff) !important; }
@@ -149,7 +144,7 @@
                                 </form>
                                 @if(Auth::user()->hasRole('Admin'))
                                     <a href="{{ route('penagihan.create', $antrian->id) }}" class="btn btn-info btn-sm mb-1 ml-1">
-                                        <i class="fas fa-envelope"></i> Tagih
+                                        <i class="fas fa-envelope"></i> Tagihan
                                     </a>
                                     @if($antrian->penagihan)
                                         <a href="{{ route('penagihan.edit', $antrian->penagihan->id) }}" class="btn btn-secondary btn-sm mb-1 ml-1">
