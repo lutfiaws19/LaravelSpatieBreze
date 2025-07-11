@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\PenagihanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ChatController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -65,3 +66,6 @@ Route::get('penagihan/{penagihan}/edit', [PenagihanController::class, 'edit'])->
 Route::put('penagihan/{penagihan}', [PenagihanController::class, 'update'])->name('penagihan.update');
 
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+
+Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
