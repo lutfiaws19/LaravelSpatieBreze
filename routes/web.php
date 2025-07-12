@@ -69,3 +69,5 @@ Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'inde
 
 Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
 Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
+Route::delete('/chat/message/{message}', [ChatController::class, 'destroy'])->name('chat.message.destroy');
+Route::delete('/chat/reset/{receiver_id}', [ChatController::class, 'reset'])->name('chat.reset');

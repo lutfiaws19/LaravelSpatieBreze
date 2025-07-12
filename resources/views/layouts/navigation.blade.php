@@ -29,9 +29,15 @@
         <x-nav-link :href="route('history.index')" :active="request()->routeIs('History')">
             {{ __('History') }}
         </x-nav-link>
+        <x-nav-link :href="route('chat.index')" :active="request()->routeIs('chat')">
+            {{ __('Chat') }}
+        </x-nav-link>
     @elseif(Auth::user()->hasRole('Pelanggan'))
         <x-nav-link :href="route('pelanggan.index')" :active="request()->routeIs('pelanggan')">
             {{ __('Pelanggan') }}
+        </x-nav-link>
+        <x-nav-link :href="route('chat.index')" :active="request()->routeIs('chat')">
+            {{ __('Chat') }}
         </x-nav-link>
     @elseif(Auth::user()->hasRole('Pemilik'))
         <x-nav-link :href="route('antrian.index')" :active="request()->routeIs('pelanggan')">
@@ -40,6 +46,7 @@
         <x-nav-link :href="route('history.index')" :active="request()->routeIs('history')">
             {{ __('history') }}
         </x-nav-link>
+
 
     @endif
 </div>
