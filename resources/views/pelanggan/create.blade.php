@@ -15,6 +15,15 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if($errors->any())
+            <div class="alert alert-danger">    
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         @php
             use Illuminate\Support\Facades\Auth;
@@ -38,13 +47,6 @@
                 <label for="type_motor">Type Motor</label>
                 <input type="text" class="form-control" id="type_motor" name="type_motor" required>
             </div>
-
-            <!-- Sembunyikan field kerusakan -->
-            <input type="hidden" name="nama_kerusakan" value="3"> <!-- ID kerusakan otomatis -->
-            <input type="hidden" id="estimasi_waktu" name="estimasi_waktu" value="0"> <!-- Estimasi waktu otomatis -->
-
-            <!-- Sembunyikan field status -->
-            <input type="hidden" name="status" value="draft"> <!-- Status otomatis -->
 
             <div class="form-group">
                 <label for="tanggal_masuk">Tanggal Masuk</label>

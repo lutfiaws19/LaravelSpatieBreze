@@ -11,7 +11,7 @@
         <h1 class="mb-4">Tambah Antrian Bengkel Motor</h1>
 
         <!-- Menampilkan pesan sukses atau kesalahan -->
-        @if(session('success'))
+       @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>

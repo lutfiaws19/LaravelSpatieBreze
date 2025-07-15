@@ -25,10 +25,9 @@ class PelangganController extends Controller
     {
         $request->validate([
             'nama_pemilik' => 'required|string|max:255',
-            'nomor_motor' => 'required|string|max:100',
+            'nomor_motor' => 'required|string|max:100|unique:antrians',
             'type_motor' => 'required|string|max:100',
             'tanggal_masuk' => 'required|date',
-            'nama_kerusakan' => 'required|exists:kerusakans,id', // Validasi kerusakan
         ]);
 
         $lastAntrian = Antrian::orderBy('nomor_antrian', 'desc')->first();
@@ -41,16 +40,13 @@ class PelangganController extends Controller
             'nomor_antrian' => $nomorAntrian, // Gunakan nomor antrian yang baru
             'tanggal_masuk' => $request->tanggal_masuk, // Gunakan waktu yang diinput
             'status' => 'draft', 
-            'nama_kerusakan' => $request->nama_kerusakan, // Simpan kerusakan yang dipilih
-            'estimasi_waktu' => $request->estimasi_waktu, 
         ]);
 
-        return redirect()->route('pelanggan.index')->with('success', 'Data berhasil disimpan');
+        return redirect()->route('pelanggan.index')->with('success', 'Antrian berhasil ditambahkan');
     }
 
     public function edit($id)
     {
-        $ker = Kerusakan::all();
         $antrian = Antrian::findOrFail($id);
         return view('antrian.edit', compact('antrian', 'ker'));
     }
