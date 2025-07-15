@@ -38,9 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/antrian/{id}/pindah-ke-history', [AntrianController::class, 'pindahkanKeHistory'])->name('antrian.toHistory');
   
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [AntrianController::class, 'index'])->name('dashboard');
+
 
     Route::resource('antrian', AntrianController::class);
     Route::resource('pelanggan', PelangganController::class);
@@ -64,8 +63,6 @@ Route::post('penagihan/{antrian}', [PenagihanController::class, 'store'])->name(
 Route::get('penagihan/{antrian}/show', [PenagihanController::class, 'show'])->name('penagihan.show');
 Route::get('penagihan/{penagihan}/edit', [PenagihanController::class, 'edit'])->name('penagihan.edit');
 Route::put('penagihan/{penagihan}', [PenagihanController::class, 'update'])->name('penagihan.update');
-
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
 Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');

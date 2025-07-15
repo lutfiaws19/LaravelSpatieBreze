@@ -47,8 +47,6 @@ class AntrianController extends Controller
             'nama_pemilik' => 'required|string|max:255',
             'nomor_motor' => 'required|string|max:255|unique:antrians',
             'type_motor' => 'required|string|max:255',
-            'nama_kerusakan' => 'required|exists:kerusakans,id', // Pastikan ini merujuk ke kolom yang benar
-            'estimasi_waktu' => 'required|string|max:255',
             'status' => 'required|in:draft,dalam_antrian,selesai',
         ]);
 
@@ -61,8 +59,6 @@ class AntrianController extends Controller
             'nama_pemilik' => $request->nama_pemilik,
             'nomor_motor' => $request->nomor_motor,
             'type_motor' => $request->type_motor,
-            'nama_kerusakan' => $request->nama_kerusakan,
-            'estimasi_waktu' => $request->estimasi_waktu,
             'status' => $request->status,
             'nomor_antrian' => $nomorAntrian,
             'tanggal_masuk' => $currentDateTime, // Menggunakan waktu saat ini
@@ -104,9 +100,7 @@ class AntrianController extends Controller
         $request->validate([
             'nama_pemilik' => 'required|string|max:255',
             'nomor_motor' => 'required|string|max:255|unique:antrians,nomor_motor,' . $id,
-            'type_motor' => 'required|string|max:255',
-            'nama_kerusakan' => 'required|exists:kerusakans,id',
-            'estimasi_waktu' => 'required|string|max:255',    
+            'type_motor' => 'required|string|max:255',  
             'status' => 'required|in:draft,dalam_antrian,selesai',
         ]);
 

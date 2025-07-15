@@ -17,15 +17,15 @@
     </x-nav-link>
 
     @if(Auth::user()->hasRole('Admin'))
-        <x-nav-link :href="route('antrian.index')" :active="request()->routeIs('antrian')">
+        {{-- <x-nav-link :href="route('antrian.index')" :active="request()->routeIs('antrian')">
             {{ __('Antrian') }}
-        </x-nav-link>
+        </x-nav-link> --}}
         <x-nav-link :href="route('pelanggan.index')" :active="request()->routeIs('pelanggan')">
             {{ __('Pelanggan') }}
         </x-nav-link>
-        <x-nav-link :href="route('kerusakan.index')" :active="request()->routeIs('kerusakan')">
+        {{-- <x-nav-link :href="route('kerusakan.index')" :active="request()->routeIs('kerusakan')">
             {{ __('Kerusakan') }}
-        </x-nav-link>
+        </x-nav-link> --}}
         <x-nav-link :href="route('history.index')" :active="request()->routeIs('History')">
             {{ __('History') }}
         </x-nav-link>

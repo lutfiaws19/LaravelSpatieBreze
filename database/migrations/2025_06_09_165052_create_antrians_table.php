@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('nama_pemilik');
             $table->string('nomor_motor')->unique();
             $table->string('type_motor');
-            $table->string('nama_kerusakan'); // Kolom untuk nama kerusakan
-            $table->integer('estimasi_waktu');
             $table->enum('status', ['draft', 'dalam_antrian', 'selesai'])->default('draft');
             $table->timestamp('tanggal_masuk')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('nomor_antrian')->nullable();

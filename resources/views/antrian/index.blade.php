@@ -86,8 +86,6 @@
                     <th>Nama Pemilik</th>
                     <th>Nomor Motor</th>
                     <th>Type Motor</th>
-                    <th>Model Kerusakan</th>
-                    <th>Estimasi Waktu</th>
                     <th>Status</th>
                     <th>Tanggal Masuk</th>
                     <th>Nomor Antrian</th>
@@ -105,14 +103,6 @@
                         <td>{{ $antrian->nama_pemilik }}</td>
                         <td>{{ $antrian->nomor_motor }}</td>
                         <td>{{ $antrian->type_motor }}</td>
-                        <td>{{ $antrian->Kerusakan->nama_kerusakan }}</td>
-                        <td>
-                            @php
-                                $estimasiWaktu = $antrian->Kerusakan->estimasi_waktu; // Ambil estimasi waktu
-                                $totalEstimasi += $estimasiWaktu; // Tambahkan ke total estimasi
-                            @endphp
-                            {{ $estimasiWaktu }} menit
-                        </td>
                         <td>
                             @if ($antrian->status == 'dalam_antrian')
                                 <span class="badge badge-warning">Dalam Antrian</span>
@@ -142,16 +132,6 @@
                                         <i class="fas fa-check"></i> Selesaikan
                                     </button>
                                 </form>
-                                @if(Auth::user()->hasRole('Admin'))
-                                    <a href="{{ route('penagihan.create', $antrian->id) }}" class="btn btn-info btn-sm mb-1 ml-1">
-                                        <i class="fas fa-envelope"></i> Tagihan
-                                    </a>
-                                    @if($antrian->penagihan)
-                                        <a href="{{ route('penagihan.edit', $antrian->penagihan->id) }}" class="btn btn-secondary btn-sm mb-1 ml-1">
-                                            <i class="fas fa-edit"></i> Edit Tagihan
-                                        </a>
-                                    @endif
-                                @endif
                             </div>
                         </td>
                     </tr>
@@ -159,36 +139,9 @@
             </tbody>
         </table>
 
-        <!-- Menampilkan total estimasi waktu -->
-        <div class="alert alert-info">
-            <strong>Total Estimasi Waktu:</strong> <span id="total_estimasi">{{ $totalEstimasi }}</span> menit
-            <strong>Countdown:</strong> <span id="countdown_timer"></span>
-        </div>
-    </div>
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let totalEstimasi = {{ $totalEstimasi }} * 60; // konversi menit ke detik
-            const countdownElement = document.getElementById('countdown_timer');
-
-            function countdown() {
-                if (totalEstimasi > 0) {
-                    const menit = Math.floor(totalEstimasi / 60);
-                    const detik = totalEstimasi % 60;
-                    countdownElement.textContent = `${menit} menit ${detik} detik`;
-                    totalEstimasi--;
-                    setTimeout(countdown, 1000);
-                } else {
-                    countdownElement.textContent = 'Selesai!';
-                }
-            }
-
-            countdown();
-        });
-    </script>
 </body>
 </html>
 </x-app-layout>

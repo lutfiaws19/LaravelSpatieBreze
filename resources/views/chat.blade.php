@@ -88,14 +88,14 @@
             @endif
 
             <!-- Tips Chat -->
-            <div class="absolute top-6 right-6 w-40 bg-black rounded-lg p-4 shadow hidden md:block">
+            {{-- <div class="absolute top-6 right-6 w-40 bg-black rounded-lg p-4 shadow hidden md:block">
                 <div class="font-semibold text-white mb-2">Tips Chat</div>
                 <ul class="text-xs text-gray-200 list-disc pl-4">
                     <li>Gunakan bahasa sopan</li>
                     <li>Pesan akan langsung terkirim</li>
                     <li>Scroll untuk melihat pesan lama</li>
                 </ul>
-            </div>
+            </div> --}}
         </div>
     </div>
 </x-app-layout>

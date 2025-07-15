@@ -42,19 +42,6 @@
                 <input type="text" class="form-control" id="type_motor" name="type_motor" value="{{ old('type_motor') }}" required>
             </div>
             <div class="form-group">
-                <label for="nama_kerusakan">Kerusakan</label>
-                <select class="form-control" name="nama_kerusakan" id="nama_kerusakan" required>
-                    <option value="" disabled selected>----</option>
-                    @foreach ($ker as $kerusakan)
-                        <option value="{{ $kerusakan->id }}" data-estimasi="{{ $kerusakan->estimasi_waktu }}">{{ $kerusakan->nama_kerusakan }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="estimasi_waktu">Estimasi Waktu</label>
-                <input type="text" class="form-control" id="estimasi_waktu" name="estimasi_waktu" value="{{ old('estimasi_waktu') }}" readonly required>
-            </div>
-            <div class="form-group">
                 <label for="status">Status</label>
                 <select class="form-control" id="status" name="status" required>
                     <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
